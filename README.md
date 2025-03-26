@@ -2,5 +2,5 @@
 
 <img src="misc/gaussian_convergence.png">
 <img src="misc/gaussian_convergence.png" width="200" height="200">
-<img src="misc/gaussian_convergence.png" width="50" height="50">
+<img src="misc/gaussian_convergence.png" width="250" height="300">
 <img src="misc/gaussian_convergence.png" width="50" height="50">
