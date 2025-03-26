@@ -9,14 +9,14 @@ This is the official implementation of the paper "Preconditioners for the Stocha
 
 ## Getting Started ##
 
-## Installation ##
+### Installation ###
 ```
 ## Clone the repo
 git clone https://github.com/sfchng/preconditioner_neural_fields.git
 cd preconditioner_neural_fields
 ```
 
-## Setup Conda Environment ##
+### Setup Conda Environment ###
 ```
 conda create -n precond_nf python=3.9 
 conda activate precond_nf
