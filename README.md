@@ -15,6 +15,7 @@ The image experiment can be reproduced with
 ```
 ./scripts/neural_image.sh
 ```
+## Key results ##
 <p align="center" width="100%">
 <img src="misc/gaussian_convergence.png" width="40%"> <img src="misc/sine_convergence.png" width="40%"> 
 <img src="misc/wavelet_convergence.png" width="40%"> <img src="misc/relu_convergence.png" width="40%"> 
