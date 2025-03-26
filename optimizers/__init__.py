@@ -29,7 +29,6 @@ from .eadam import EAdam
 from .padam import PAdam
 from .pesgd import PESGD
 from .diagp_sgd import Diag_PSGD
-from .preconditioners_sgd import Preconditioner_Lowrank
 from . import lr_scheduler
 from . import swa_utils
 

@@ -18,6 +18,7 @@ def main():
     with torch.cuda.device(opt.device):
 
         model = importlib.import_module("model.{}".format(opt.model))
+        log.status(f"Training for model.{opt.model}")
         m = model.Model(opt)
 
         m.load_dataset(opt)

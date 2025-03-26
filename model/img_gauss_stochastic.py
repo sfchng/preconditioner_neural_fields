@@ -23,12 +23,11 @@ import time
 from torch.utils.data import DataLoader
 from data.image import Image
 import optimizers as torch_optimizers
-import preconditioners as psgd
-from preconditioner import kfac as pkfac
+from optimizers.precond_kfac import kfac as pkfac
 from optimizers.shampoo import shampoo
 from optimizers.precond_adahessian import adahessian
 from optimizers.precond_adahessian import adahessian_j
-from optimizers.precond_kfac import kfac
+
 # ============================ main engine for training and evaluation ============================
 
 class Model(base.Model):
@@ -44,16 +43,8 @@ class Model(base.Model):
         
     def setup_optimizer(self,opt):
         log.info("setting up optimizers...{}".format(opt.optim.algo))
-
-        if opt.optim.algo == "LBFGS":
-            optimizer = getattr(torch_optimizers, opt.optim.algo)
-            optim_list = [
-                dict(params=self.graph.neural_image.parameters(),lr=opt.optim.LBFGS.lr,
-                max_iter=opt.optim.LBFGS.max_iter, history_size=opt.optim.LBFGS.history,
-                line_search_fn = opt.optim.LBFGS.line_search_fn)
-            ]
-            self.optim = optimizer(optim_list)              
-        elif opt.optim.algo == "Adam":
+           
+        if opt.optim.algo == "Adam":
             optimizer = getattr(torch_optimizers, opt.optim.algo)
             optim_list = [
                 dict(params=self.graph.neural_image.parameters(),lr=opt.optim.Adam.lr)
@@ -110,7 +101,7 @@ class Model(base.Model):
         self.log_scalars(opt, loss, var, step=0, split='initial')
         
 
-        loader = tqdm.trange(opt.max_iter,desc="training",leave=False)
+        loader = tqdm.trange(opt.max_iter,desc="training neural image function",leave=False)
 
         ## save log ##
         outfile = "{}/log.txt".format(opt.output_path)
