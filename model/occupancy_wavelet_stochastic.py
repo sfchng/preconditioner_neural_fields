@@ -63,7 +63,7 @@ class Model(base.Model):
             raise NotImplementedError
         log.status(self.optim)
 
-     def train(self, opt):
+    def train(self, opt):
         ## before training ##
         log.title("Training start")
         self.timer = edict(start=time.time(), it_mean=None)
@@ -365,7 +365,7 @@ class NeuralBinaryOccupancy(torch.nn.Module):
         hidden_features = opt.arch.wavelet.hidden_features
 
         self.mlp.append(RealGaborLayer(input_features, hidden_features, omega=opt.arch.wavelet.first_omega, sigma=opt.arch.wavelet.scale, is_first=True))
-        for i in range(opt.gaussian.hidden_layers):
+        for i in range(opt.arch.wavelet.hidden_layers):
             self.mlp.append(RealGaborLayer(hidden_features, hidden_features, omega=opt.arch.wavelet.hidden_omega, sigma=opt.arch.wavelet.scale, is_first=False))
 
         self.mlp.append(torch.nn.Linear(hidden_features, output_features))

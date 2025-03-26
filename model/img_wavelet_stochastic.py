@@ -77,7 +77,6 @@ class Model(base.Model):
     def setup_visualizer(self,opt):
         super().setup_visualizer(opt)   
 
-
     def train(self,opt):
         # before training
         log.title("TRAINING START")
@@ -101,7 +100,7 @@ class Model(base.Model):
         loss = self.graph.compute_loss(opt, var, mode='initial')
         self.visualize(opt, var, step=0, split="initial")
         self.log_scalars(opt, loss, var, step=0, split='initial')  
-                  
+                    
         loader = tqdm.trange(opt.max_iter,desc="training neural image function",leave=False)
 
         ## save log ##
@@ -669,7 +668,7 @@ class NeuralImageFunction(torch.nn.Module):
         hidden_features = opt.arch.wavelet.hidden_features
 
         self.mlp.append(RealGaborLayer(input_features, hidden_features, omega=opt.arch.wavelet.first_omega, sigma=opt.arch.wavelet.scale, is_first=True))
-        for i in range(opt.arch.gaussian.hidden_layers):
+        for i in range(opt.arch.wavelet.hidden_layers):
             self.mlp.append(RealGaborLayer(hidden_features, hidden_features, omega=opt.arch.wavelet.hidden_omega, sigma=opt.arch.wavelet.scale, is_first=False))
 
         self.mlp.append(torch.nn.Linear(hidden_features, output_features))
