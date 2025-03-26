@@ -13,15 +13,20 @@ This is the official implementation of the paper "Preconditioners for the Stocha
 
 ## Datasets
 ### Div2k data ###
-We use the ``div2k`` dataset for our experiment. Please download the dataset [here](https://universityofadelaide.box.com/s/13twlttg9aagf4srye11c6oh41t04dv5), and place it under
+We use the ``div2k`` dataset for our 2d image experiment. Please download the dataset [here](https://universityofadelaide.box.com/s/13twlttg9aagf4srye11c6oh41t04dv5), and place it under
 the directory ``data``.
+
 
 
 ### Run commands ###
 ```
-# Run 2d image experiment
+# Image experiment
 ./scripts/neural_image.sh
 ```
+```
+# Binary occupancy experiment
+```
+
 ### Key results ###
 ESGD (a Curvature-aware preconditioned gradient descent algorithm) improves convergence for Gaussian, sine and wavelet activations, while Adam performs
 better for ReLU network with positional encoding (ReLU(PE)). We provide training convergence for a 2D image reconstruction task as an example below
