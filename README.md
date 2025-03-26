@@ -7,9 +7,23 @@ Australian Institute for Machine Learning (AIML), University of Adelaide, \* den
 
 This is the official implementation of the paper "Preconditioners for the Stochastic Training of Neural fields".
 
-## Setup ##
+## Getting Started ##
 
 ## Installation ##
+```
+## Clone the repo
+git clone https://github.com/sfchng/preconditioner_neural_fields.git
+cd preconditioner_neural_fields
+```
+
+## Setup Conda Environment ##
+```
+conda create -n precond_nf python=3.9 
+conda activate precond_nf
+pip install torch==1.12.1+cu113 torchvision==0.13.1+cu113 torchaudio==0.12.1 --extra-index-url https://download.pytorch.org/whl/cu113
+pip install -r requirements.txt
+
+```
 
 ## Datasets
 ### Div2k data ###
