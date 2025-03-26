@@ -1,4 +1,4 @@
-# Preconditioners for the Stochastic Training of Neural fields (CVPR-2025)#
+# Preconditioners for the Stochastic Training of Neural fields (CVPR-2025)
 [Shin-Fang Chng](https://sfchng.github.io)\*,
 [Hemanth Saratchandran]()\*,
 [Simon Lucey]() <br>
