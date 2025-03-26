@@ -3,4 +3,3 @@
 <img src="misc/gaussian_convergence.png" width="40%"> <img src="misc/gaussian_convergence.png" width="40%"> 
 <img src="misc/gaussian_convergence.png" width="40%"> <img src="misc/gaussian_convergence.png" width="40%"> 
 </p>
-<img src="misc/gaussian_convergence.png" width="40%"> <img src="misc/gaussian_convergence.png" width="40%"> 
