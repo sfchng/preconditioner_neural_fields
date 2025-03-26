@@ -154,7 +154,6 @@ class Model(base.Model):
         self.training_time += self.train_per_iter
         ## compute IOU #
         loss.iou = self.graph.compute_IOU(var.labels, var.occupancy, mode="train")
-
         return loss
 
     def train_iteration_esgd(self, opt, var, batch_id):
@@ -175,7 +174,6 @@ class Model(base.Model):
         self.train_per_iter = esgd_train_end - esgd_train_start
         self.training_time += self.train_per_iter
         loss.iou = self.graph.compute_IOU(var.labels, var.occupancy, mode="train")
-
         return loss
 
 

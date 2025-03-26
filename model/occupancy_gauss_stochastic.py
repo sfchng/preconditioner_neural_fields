@@ -156,7 +156,6 @@ class Model(base.Model):
         self.training_time += self.train_per_iter
         ## compute IOU #
         loss.iou = self.graph.compute_IOU(var.labels, var.occupancy, mode="train")
-
         return loss
 
     def train_iteration_esgd(self, opt, var, batch_id):
@@ -177,7 +176,6 @@ class Model(base.Model):
         
         ## compute IOU #
         loss.iou = self.graph.compute_IOU(var.labels, var.occupancy, mode="train")
-
         return loss
 
 
@@ -199,7 +197,6 @@ class Model(base.Model):
 
         ## compute IOU #
         loss.iou = self.graph.compute_IOU(var.labels, var.occupancy, mode="train")
-
         return loss
     
     @torch.no_grad()

@@ -115,30 +115,6 @@ class Model(base.Model):
             ## save logs ##
             with open(time_fname, "a") as f:
                 f.write("{} {:.5f} {:.5f} {:.6f} {:.6f}\n".format(self.it, self.train_per_iter, self.training_time, loss.all, loss.iou ))
-        
-        
-    def train_iteration_lbfgs(self, opt, var, batch_idx):
-
-        self.timer.it_start = time.time()
-
-        def closure():
-            self.optim.zero_grad()
-            var_out = self.graph.forward(opt, var, mode="train")
-            loss = self.graph.compute_loss(opt, var_out, mode="train")
-            loss.all.backward()
-            return loss.all
-
-        lbfgs_train_start = time.time()
-        self.optim.step(closure)
-        loss = closure()
-        lbfgs_train_end = time.time()
-        train_per_iter = lbfgs_train_end - lbfgs_train_start
-        
-        self.training_time += train_per_iter
-        
-        print("Loss {:.5f} | Train per iter {:.5f} | Train time {:.5f}\n".format(loss, train_per_iter, self.training_time))        
-
-        return loss
 
     def train_iteration(self, opt, var, batch_id):
 
@@ -156,8 +132,8 @@ class Model(base.Model):
 
         self.train_per_iter = adam_train_end - adam_train_start
         self.training_time += self.train_per_iter
-        ##print("Epoch {} Batch id {} Loss {:.5f} | Train time {:.5f}\n".format(self.it,  batch_id, loss.all, self.training_time))
-
+        ## compute IOU #
+        loss.iou = self.graph.compute_IOU(var.labels, var.occupancy, mode="train")
 
         return loss
     
@@ -177,6 +153,7 @@ class Model(base.Model):
 
         self.train_per_iter = train_end - train_start
         self.training_time += self.train_per_iter
+        
         ## compute IOU #
         loss.iou = self.graph.compute_IOU(var.labels, var.occupancy, mode="train")
 
@@ -200,6 +177,8 @@ class Model(base.Model):
         self.train_per_iter = esgd_train_end - esgd_train_start
         self.training_time += self.train_per_iter
 
+        ## compute IOU #
+        loss.iou = self.graph.compute_IOU(var.labels, var.occupancy, mode="train")
         return loss
 
 
