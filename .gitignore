@@ -3,7 +3,7 @@ output/
 log/
 output_*/
 audio_out/
-
+data/
 
 ## data ##
 *.npz
