@@ -119,7 +119,7 @@ class Model(base.Model):
                 loss = self.train_iteration_esgd(opt,var, loader, trainloader)             
             elif opt.optim.algo =="Preconditioner_KFAC":
                 loss = self.train_iteration_pkfac(opt, var, loader, trainloader)
-            elif opt.optim.algo == "Adahessian" or opt.optim.algo == "Adahessian_J":
+            elif opt.optim.algo in ["Adahessian","Adahessian_J"]:
                 loss = self.train_iteration_adahessian(opt, var, loader, trainloader)                    
             else:
                 loss = self.train_iteration(opt,var, loader, trainloader)

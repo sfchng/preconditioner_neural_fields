@@ -92,7 +92,6 @@ class Model(base.Model):
         var.test_rgbs = self.dataset.labels
         var.image = self.dataset.image_raw
 
-
         self.graph.eval()
         var = util.move_to_device(var, opt.device)
         var = self.graph.forward(opt, var)
@@ -100,7 +99,6 @@ class Model(base.Model):
         self.visualize(opt, var, step=0, split="initial")
         self.log_scalars(opt, loss, var, step=0, split='initial')
         
-
         loader = tqdm.trange(opt.max_iter,desc="training neural image function",leave=False)
 
         ## save log ##
@@ -109,19 +107,20 @@ class Model(base.Model):
             f.close()
 
         for it in loader:
+            ## train epoch ## 
             self.graph.train()
-            ## train iteration ## 
             if opt.optim.algo  == "ESGD":
                 loss = self.train_iteration_esgd(opt,var, loader, trainloader)              
             elif opt.optim.algo =="Preconditioner_KFAC":
                 loss = self.train_iteration_pkfac(opt, var, loader, trainloader)
-            elif opt.optim.algo == "Adahessian" or opt.optim.algo == "Adahessian_J":
+            elif opt.optim.algo in ["Adahessian","Adahessian_J"]:
                 loss = self.train_iteration_adahessian(opt, var, loader, trainloader)                    
             else:
                 loss = self.train_iteration(opt,var, loader, trainloader)
             
             final_loss = loss.render
 
+            ## validation
             if self.it % opt.freq.val ==0:
                 with torch.no_grad():
                     var = self.graph.forward(opt,var,mode="evaluate")
@@ -130,8 +129,11 @@ class Model(base.Model):
                     self.log_scalars(opt,loss,var,step=self.it, split="evaluate")
                     self.visualize(opt,var, step=self.it, split="evaluate")
 
+            ## save checkpoint
             if self.it % opt.freq.ckpt == 0:
                 self.save_checkpoint(opt,ep=None,it=self.it)
+
+            ## dump log to txt
             with open(outfile, 'a') as f:
                 f.write("{} {:.5f} {:.5f} {:.5f}\n".format(self.it, self.train_per_epoch, self.training_time, final_loss))
                     

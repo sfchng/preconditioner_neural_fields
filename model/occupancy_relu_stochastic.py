@@ -91,9 +91,9 @@ class Model(base.Model):
                 var.points = points.cuda()
                 var.labels = labels.cuda()
 
-                if opt.optim.algo == "ESGD" or opt.optim.algo == "ESGD_M" :
+                if opt.optim.algo in ["ESGD","ESGD_Max"] :
                     loss = self.train_iteration_esgd(opt, var, batch_id)
-                elif opt.optim.algo =="Adahessian" or opt.optim.algo =="Adahessian_J":
+                elif opt.optim.algo in ["Adahessian", "Adahessian_J"]:
                     loss = self.train_iteration_ada(opt, var)
                 elif opt.optim.algo == "Preconditioner_KFAC":
                     loss = self.train_iteration_pkfac(opt, var)
@@ -216,7 +216,7 @@ class Graph(base.Graph):
         log.status(self.neural_bocc)
         
     def forward(self, opt, var, mode=None):
-        var.occupancy = self.neural_bocc.forward(var.points)
+        var.occupancy = self.neural_bocc.forward(opt, var.points)
         return var
         
     

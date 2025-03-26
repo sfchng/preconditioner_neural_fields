@@ -28,7 +28,7 @@ arch:
 
 data:                                                        # data options
     dataset: bocc_stanford
-    root: data/sdf/shapes
+    root: data/bocc/shapes
     scene: armadillo                                        # scene_name
     
 loss_weight:                                                # loss weights (in log scale)
