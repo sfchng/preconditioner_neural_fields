@@ -1,4 +1,4 @@
-# Preconditioners for the Stochastic Training of Neural fields #
+# Preconditioners for the Stochastic Training of Neural fields (CVPR-2025)#
 [Shin-Fang Chng](https://sfchng.github.io)\*,
 [Hemanth Saratchandran]()\*,
 [Simon Lucey]() <br>
@@ -17,6 +17,7 @@ This is the official implementation of the paper "Preconditioners for the Stocha
 We use the ``div2k`` dataset for our experiment. Please download the dataset [here](https://universityofadelaide.box.com/s/13twlttg9aagf4srye11c6oh41t04dv5), and place it under
 the directory ``data``.
 
+### Run commands ###
 The image experiment can be reproduced with
 ```
 ./scripts/neural_image.sh
