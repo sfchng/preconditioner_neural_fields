@@ -1,8 +1,8 @@
 # Preconditioners for the Stochastic Training of Neural fields #
-[Shin-Fang Chng](https://sfchng.github.io)\,
-[Hemanth Saratchandran]()\,
-[Simon Lucey](),
-Australian Institute for Machine Learning (AIML), University of Adelaide
+[Shin-Fang Chng](https://sfchng.github.io)\*,
+[Hemanth Saratchandran]()\*,
+[Simon Lucey]() <br>
+Australian Institute for Machine Learning (AIML), University of Adelaide, \* denotes equal contribution
 
 
 This is the official implementation of the paper "Preconditioners for the Stochastic Training of Neural fields".
