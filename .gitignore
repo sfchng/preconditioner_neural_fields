@@ -1,0 +1,15 @@
+## output/output_files ##
+output/
+log/
+output_*/
+audio_out/
+
+
+## data ##
+*.npz
+
+## pycache ##
+__pycache__/
+model/__pycache__/
+
+
