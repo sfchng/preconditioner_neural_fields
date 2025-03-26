@@ -10,12 +10,12 @@ This is the official implementation of the paper "Preconditioners for the Stocha
 ### 💿 Datasets
 
 
-### Image Reconstruction
+## Image Reconstruction
 The image experiment can be reproduced with
 ```
 ./scripts/neural_image.sh
 ```
-## Key results ##
+### Key results ###
 <p align="center" width="100%">
 <img src="misc/gaussian_convergence.png" width="40%"> <img src="misc/sine_convergence.png" width="40%"> 
 <img src="misc/wavelet_convergence.png" width="40%"> <img src="misc/relu_convergence.png" width="40%"> 
