@@ -10,10 +10,13 @@ This is the official implementation of the paper "Preconditioners for the Stocha
 
 ### Installation ###
 
-### Datasets
-
 
 ## Image Reconstruction
+
+### Datasets
+We use the ``div2k`` dataset for our experiment. Please download the dataset [here](https://universityofadelaide.box.com/s/13twlttg9aagf4srye11c6oh41t04dv5), and place it under
+the directory ``data``.
+
 The image experiment can be reproduced with
 ```
 ./scripts/neural_image.sh
