@@ -33,13 +33,15 @@ the directory ``data/images``.
 ### Stanford data ##
 We use the ``stanford`` dataset for our 3d binary occupancy experiment. Please download the dataset [here](https://universityofadelaide.box.com/s/k435ov4uoj8pybzdunuc3m92gap14zjp), and place it under the directory ``data/bocc``.
 
-### Run commands ###
+## Running this repo ##
 ```
 # Image experiment
 ./scripts/neural_image.sh
 ```
+
 ```
 # Binary occupancy experiment
+./scripts/neural_bocc.sh
 ```
 
 ### Key results ###
