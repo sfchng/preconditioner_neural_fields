@@ -1,11 +1,14 @@
 # Preconditioners for the Stochastic Training of Neural fields (CVPR-2025)
+
+<a href='https://arxiv.org/abs/2402.08784.pdf'><img src='https://img.shields.io/badge/Paper-Arxiv-red'></a>
+This is the official implementation of the paper "Preconditioners for the Stochastic Training of Neural fields".
+
 [Shin-Fang Chng](https://sfchng.github.io)\*,
 [Hemanth Saratchandran]()\*,
 [Simon Lucey]() <br>
 Australian Institute for Machine Learning (AIML), University of Adelaide, \* denotes equal contribution
 
 
-This is the official implementation of the paper "Preconditioners for the Stochastic Training of Neural fields".
 <p align="center" width="100%">
 <img src="misc/teaser_figure.png" width="95%"> 
 </p>
