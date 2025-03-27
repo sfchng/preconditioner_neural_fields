@@ -70,5 +70,5 @@ The code here is the implementation of the following publication. If you use thi
 <h2 id="acknowledgement"> 🤝 Acknowledgement  </h2>
 
 We sincerely thank the owners of the following open source projects, which are used by our released codes: 
-[BARF](https://github.com/chenhsuanlin/bundle-adjusting-NeRF), [Siren] (https://github.com/vsitzmann/siren)[ESGD], [Wire](https://github.com/vishwa91/wire), [SAPE](https://github.com/amirhertz/SAPE)  (https://github.com/crowsonkb/esgd), [AdaHessian](https://github.com/amirgholami/adahessian) [KFAC](https://github.com/Thrandis/EKFAC-pytorch) [Shampoo](ttps://github.com/google-research/google-
+[BARF](https://github.com/chenhsuanlin/bundle-adjusting-NeRF), [Siren](https://github.com/vsitzmann/siren)[ESGD], [Wire](https://github.com/vishwa91/wire), [SAPE](https://github.com/amirhertz/SAPE)  (https://github.com/crowsonkb/esgd), [AdaHessian](https://github.com/amirgholami/adahessian) [KFAC](https://github.com/Thrandis/EKFAC-pytorch) [Shampoo](https://github.com/google-research/google-
 research/tree/master/scalable shampoo/pytorch)
