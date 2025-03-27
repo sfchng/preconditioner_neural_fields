@@ -55,3 +55,14 @@ better for ReLU network with positional encoding (ReLU(PE)). We provide training
 <img src="misc/gaussian_convergence.png" width="40%"> <img src="misc/sine_convergence.png" width="40%"> 
 <img src="misc/wavelet_convergence.png" width="40%"> <img src="misc/relu_convergence.png" width="40%"> 
 </p>
+
+
+<h2 id="citation"> 📖 Citation  </h2>
+
+```
+@article{chng2024preconditioners,
+  title={Preconditioners for the stochastic training of implicit neural representations},
+  author={Chng, Shin-Fang and Saratchandran, Hemanth and Lucey, Simon},
+  journal={arXiv preprint arXiv:2402.08784},
+  year={2024}
+}
