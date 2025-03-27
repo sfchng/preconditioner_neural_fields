@@ -58,7 +58,7 @@ better for ReLU network with positional encoding (ReLU(PE)). We provide training
 
 
 <h2 id="citation"> 📖 Citation  </h2>
-
+The code here is the implementation of the following publication. If you use this software package, please cite us
 ```
 @article{chng2024preconditioners,
   title={Preconditioners for the stochastic training of implicit neural representations},
@@ -66,3 +66,9 @@ better for ReLU network with positional encoding (ReLU(PE)). We provide training
   journal={arXiv preprint arXiv:2402.08784},
   year={2024}
 }
+
+<h2 id="acknowledgement"> 🤝 Acknowledgement  </h2>
+
+We sincerely thank the owners of the following open source projects, which are used by our released codes: 
+[BARF](https://github.com/chenhsuanlin/bundle-adjusting-NeRF), [Siren] (https://github.com/vsitzmann/siren)[ESGD], [Wire](https://github.com/vishwa91/wire), [SAPE](https://github.com/amirhertz/SAPE)  (https://github.com/crowsonkb/esgd), [AdaHessian](https://github.com/amirgholami/adahessian) [KFAC](https://github.com/Thrandis/EKFAC-pytorch) [Shampoo](ttps://github.com/google-research/google-
+research/tree/master/scalable shampoo/pytorch)
