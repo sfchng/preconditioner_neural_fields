@@ -62,6 +62,7 @@ better for ReLU network with positional encoding (ReLU(PE)). We provide training
 
 <h2 id="citation"> 📖 Citation  </h2>
 The code here is the implementation of the following publication. If you use this software package, please cite us
+
 ```
 @article{chng2024preconditioners,
   title={Preconditioners for the stochastic training of implicit neural representations},
@@ -70,6 +71,7 @@ The code here is the implementation of the following publication. If you use thi
   year={2024}
 }
 ```
+
 <h2 id="acknowledgement"> 🤝 Acknowledgement  </h2>
 
 We sincerely thank the owners of the following open source projects, which are used by our released codes: 
