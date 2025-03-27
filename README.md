@@ -6,6 +6,10 @@ Australian Institute for Machine Learning (AIML), University of Adelaide, \* den
 
 
 This is the official implementation of the paper "Preconditioners for the Stochastic Training of Neural fields".
+<p align="center" width="100%">
+<img src="misc/teaser_figure.png" width="60%"> 
+</p>
+
 
 ## Getting Started ##
 
@@ -25,7 +29,7 @@ pip install -r requirements.txt
 python -m pip install libigl
 ```
 
-## Datasets
+## Data
 ### Div2k data ###
 We use the ``div2k`` dataset for our 2d image experiment. Please download the dataset [here](https://universityofadelaide.box.com/s/13twlttg9aagf4srye11c6oh41t04dv5), and place it under
 the directory ``data/images``.
