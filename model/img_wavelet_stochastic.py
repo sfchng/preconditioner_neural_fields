@@ -90,9 +90,8 @@ class Model(base.Model):
         trainloader = DataLoader(self.dataset, batch_size=opt.data.batch_size, shuffle=True)
 
         var = edict(idx=torch.arange(opt.batch_size))
-        var.test_coords = self.dataset.coords
-        var.test_rgbs = self.dataset.labels
-        var.image = self.dataset.image_raw
+        var.test_coords = self.dataset.coords #(HW,2)
+        var.gt_rgb = self.dataset.labels #(HW,3)
 
         self.graph.eval()
         var = util.move_to_device(var, opt.device)
@@ -374,7 +373,6 @@ class Model(base.Model):
     
     
     def compute_hessian(self, loss, D=None):
-
         grads = torch.autograd.grad(loss.all, self.graph.neural_image.parameters(), create_graph=True)
         grads = torch.cat([grad.flatten() for grad in grads])       
         # Compute the Hessian matrix
@@ -410,8 +408,6 @@ class Model(base.Model):
                 break
             
         return i
-        
-        
         
 
     def normalization(self, v):
@@ -456,7 +452,6 @@ class Model(base.Model):
 
     @torch.no_grad()
     def log_cond_num(self,cond_num,step=0,split="train", mode="condition_num"):
-        
         ## log learning rate ##
         if split == "train":
             self.tb.add_scalar("{0}/{1}".format(split, mode),cond_num,step)
@@ -464,7 +459,6 @@ class Model(base.Model):
 
     @torch.no_grad()
     def log_scalars(self,opt,loss,var,metric=None,step=0,split="train"):
-            
         if type(loss) is edict:
             for key,value in loss.items():
                 if key=="all": continue
@@ -487,8 +481,8 @@ class Model(base.Model):
         if split != "train":
             self.vis_it +=1
             if opt.tb:
-                util_vis.tb_image(opt,self.tb,step,split,"groundtruth",var.image[None])
-                util_vis.tb_image(opt,self.tb,step,split,"predicted",var.rgb_map.view(opt.batch_size,opt.H,opt.W,var.image.shape[0]).permute(0,3,1,2))
+                util_vis.tb_image(opt,self.tb,step,split,"groundtruth",var.gt_rgb.view(opt.H, opt.W, 3).permute(2,0,1)[None])
+                util_vis.tb_image(opt,self.tb,step,split,"predicted",var.rgb_map.view(opt.batch_size,opt.H,opt.W,3).permute(0,3,1,2))
 
 
     def evaluate(self, opt):
@@ -565,17 +559,16 @@ class Graph(base.Graph):
         if mode == "train":
             var.rgb = self.neural_image.forward(var.input) 
         else:
-            var.rgb = self.neural_image.forward(var.test_coords.squeeze(0))
+            var.rgb = self.neural_image.forward(var.test_coords)
         return var
         
     def compute_loss(self,opt,var,mode=None):
         loss = edict()
         if opt.loss_weight.render is not None:
-            image = var.image.view(opt.batch_size,self.channel,opt.H*opt.W).permute(0,2,1)
             if mode == "train":
                 loss.render = self.mse_loss(var.rgb,var.label)
             else:
-                loss.render = self.mse_loss(var.rgb, image)
+                loss.render = self.mse_loss(var.rgb, var.gt_rgb)
         return loss
 
 
@@ -599,6 +592,7 @@ class GaussianLayer(torch.nn.Module):
         k1 = (-0.5*(input)**2/self.sigma**2).exp()
         return k1
     
+
 class GaborLayer(torch.nn.Module):
     def __init__(self, in_features, out_features, bias=True, is_first=False, omega=10, sigma=10, trainable=False ):
         super().__init__()
@@ -626,12 +620,9 @@ class GaborLayer(torch.nn.Module):
         lin = self.linear(input)
         scale_x = lin
         scale_y = self.scale_orth(input)
-        
         freq_term = torch.exp(1j*self.omega*lin)
-        
         arg = scale_x.abs().square() + scale_y.abs().square()
         gauss_term = torch.exp(-self.scale*self.scale*arg)
-                
         return freq_term*gauss_term
     
 
@@ -642,14 +633,12 @@ class RealGaborLayer(torch.nn.Module):
         self.scale_0 = sigma
         self.is_first = is_first
         self.input_features = in_features
-
         self.freqs = torch.nn.Linear(in_features, out_features, bias=bias)
         self.scale = torch.nn.Linear(in_features, out_features, bias=bias)
         
     def forward(self, input):
         omega = self.omega_0 * self.freqs(input)
         scale = self.scale(input) * self.scale_0
-        
         return torch.cos(omega)*torch.exp(-(scale**2))        
 
     
@@ -660,12 +649,10 @@ class NeuralImageFunction(torch.nn.Module):
         self.wavelet = 'gabor'
         self.define_network(opt)
 
-
     def define_network(self,opt):
         self.mlp = []
         input_features = 2
         output_features = 3
-        
         hidden_features = opt.arch.wavelet.hidden_features
 
         self.mlp.append(RealGaborLayer(input_features, hidden_features, omega=opt.arch.wavelet.first_omega, sigma=opt.arch.wavelet.scale, is_first=True))
@@ -676,12 +663,8 @@ class NeuralImageFunction(torch.nn.Module):
 
         self.mlp = torch.nn.Sequential(*self.mlp)
 
-
-
     def forward(self,coord_2D): 
-
         rgb = self.mlp(coord_2D)
-        
         return rgb
 
 

@@ -88,9 +88,8 @@ class Model(base.Model):
         trainloader = DataLoader(self.dataset, batch_size=opt.data.batch_size, shuffle=True)
 
         var = edict(idx=torch.arange(opt.batch_size))
-        var.test_coords = self.dataset.coords
-        var.test_rgbs = self.dataset.labels
-        var.image = self.dataset.image_raw
+        var.test_coords = self.dataset.coords #(HW,2)
+        var.gt_rgb = self.dataset.labels #(HW,3)
 
         self.graph.eval()
         var = util.move_to_device(var, opt.device)
@@ -476,15 +475,14 @@ class Model(base.Model):
             self.tb.add_scalar("{0}/loss_render".format(split),loss,step)
         self.tb.add_scalar("{0}/{1}".format(split,"PSNR"),psnr,step)
 
-
     @torch.no_grad()
     def visualize(self,opt,var,step=0,split="train"):
         var.rgb_map = var.rgb.detach().clone()
         if split != "train":
             self.vis_it +=1
             if opt.tb:
-                util_vis.tb_image(opt,self.tb,step,split,"groundtruth",var.image[None])
-                util_vis.tb_image(opt,self.tb,step,split,"predicted",var.rgb_map.view(opt.batch_size,opt.H,opt.W,var.image.shape[0]).permute(0,3,1,2))
+                util_vis.tb_image(opt,self.tb,step,split,"groundtruth",var.gt_rgb.view(opt.H, opt.W, 3).permute(2,0,1)[None])
+                util_vis.tb_image(opt,self.tb,step,split,"predicted",var.rgb_map.view(opt.batch_size,opt.H,opt.W,3).permute(0,3,1,2))
 
     def evaluate_image(self, opt):
         
@@ -501,7 +499,6 @@ class Model(base.Model):
 
     def evaluate(self, opt):
         trainloader = DataLoader(self.dataset, batch_size=opt.data.batch_size, shuffle=True)
-
         var = edict(idx=torch.arange(opt.batch_size))
         var.test_coords = self.dataset.coords
         var.test_rgbs = self.dataset.labels
@@ -573,17 +570,16 @@ class Graph(base.Graph):
         if mode == "train":
             var.rgb = self.neural_image.forward(var.input) 
         else:
-            var.rgb = self.neural_image.forward(var.test_coords.squeeze(0))
+            var.rgb = self.neural_image.forward(var.test_coords)
         return var
         
     def compute_loss(self,opt,var,mode=None):
         loss = edict()
         if opt.loss_weight.render is not None:
-            image = var.image.view(opt.batch_size,self.channel,opt.H*opt.W).permute(0,2,1)
             if mode == "train":
                 loss.render = self.mse_loss(var.rgb,var.label)
             else:
-                loss.render = self.mse_loss(var.rgb, image)
+                loss.render = self.mse_loss(var.rgb, var.gt_rgb)
         return loss
 
 
@@ -624,13 +620,8 @@ class NeuralImageFunction(torch.nn.Module):
 
 
     def forward(self,coord_2D): 
-        """
-        Args:
-            coord_2D (torch.Tensor [B, C])
-        """
 
-        rgb = self.mlp(coord_2D)
-        
+        rgb = self.mlp(coord_2D)        
         return rgb
 
 

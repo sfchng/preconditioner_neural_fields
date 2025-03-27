@@ -26,7 +26,7 @@ class Image(Dataset):
         npz_data["train_data"] and npz_data["test_data"] have different sets of images
 
         Return:
-            self.image_raw ([C,H,W])
+            self.image_raw ([C,HW])
         """
         id = opt.data.div2k_id
         npz_data = np.load('data/data_div2k.npz')
@@ -42,8 +42,7 @@ class Image(Dataset):
         return image.squeeze(0)
 
     def load_image(self, opt):
-
-
+        
         self.image_raw = self.load_div(opt)
         opt.H = self.image_raw.shape[1]
         opt.W = self.image_raw.shape[2]
@@ -51,18 +50,16 @@ class Image(Dataset):
         self.channel = self.image_raw.shape[0]
         if self.channel == 1:
             log.info("Loaded grayscale image")
-        self.coords = warp.get_normalized_pixel_grid_equal(opt)
-        self.image_raw = self.image_raw[:3]
-        self.labels = self.image_raw.view(opt.batch_size, self.channel, opt.H*opt.W).permute(0,2,1)
-
+        self.coords = warp.get_normalized_pixel_grid_equal(opt).squeeze(0)
+        self.labels = self.image_raw[:3].view(self.channel, opt.H*opt.W).permute(1,0)
        
     def __len__(self):
-        return self.coords.shape[1]
+        return self.coords.shape[0]
     
     def __getitem__(self, idx):
         
-        gt_dict = {"labels": self.labels[0]}
-        return self.coords[0, idx], self.labels[0,idx]
+        gt_dict = {"labels": self.labels}
+        return self.coords[idx], self.labels[idx]
             
 
         

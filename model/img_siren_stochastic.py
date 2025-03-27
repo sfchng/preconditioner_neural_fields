@@ -45,7 +45,6 @@ class Model(base.Model):
         
     def setup_optimizer(self,opt):
         log.info("setting up optimizers...{}".format(opt.optim.algo))
-
            
         if opt.optim.algo == "Adam":
             optimizer = getattr(torch_optimizers, opt.optim.algo)
@@ -91,9 +90,8 @@ class Model(base.Model):
         trainloader = DataLoader(self.dataset, batch_size=opt.data.batch_size, shuffle=True)
 
         var = edict(idx=torch.arange(opt.batch_size))
-        var.test_coords = self.dataset.coords
-        var.test_rgbs = self.dataset.labels
-        var.image = self.dataset.image_raw
+        var.test_coords = self.dataset.coords #(HW,2)
+        var.gt_rgb = self.dataset.labels #(HW,3)
 
         self.graph.eval()
         var = util.move_to_device(var, opt.device)
@@ -127,7 +125,6 @@ class Model(base.Model):
             
             final_loss = loss.render
 
-
             if self.it % opt.freq.val ==0:
                 with torch.no_grad():
                     var = self.graph.forward(opt,var,mode="evaluate")
@@ -135,7 +132,10 @@ class Model(base.Model):
                     loss = self.summarize_loss(opt, var, loss)
                     self.log_scalars(opt,loss,var,step=self.it, split="evaluate")
                     self.visualize(opt,var, step=self.it, split="evaluate")
-                    
+
+            if self.it % opt.freq.ckpt == 0:
+                self.save_checkpoint(opt,ep=None,it=self.it)
+
             with open(outfile, 'a') as f:
                 f.write("{} {:.5f} {:.5f} {:.5f}\n".format(self.it, self.train_per_epoch, self.training_time, final_loss))
 
@@ -469,13 +469,13 @@ class Model(base.Model):
         if split != "train":
             self.vis_it +=1
             if opt.tb:
-                util_vis.tb_image(opt,self.tb,step,split,"groundtruth",var.image[None])
-                util_vis.tb_image(opt,self.tb,step,split,"predicted",var.rgb_map.view(opt.batch_size,opt.H,opt.W,var.image.shape[0]).permute(0,3,1,2))
+                util_vis.tb_image(opt,self.tb,step,split,"groundtruth",var.gt_rgb.view(opt.H, opt.W, 3).permute(2,0,1)[None])
+                util_vis.tb_image(opt,self.tb,step,split,"predicted",var.rgb_map.view(opt.batch_size,opt.H,opt.W,3).permute(0,3,1,2))
 
 # ============================ computation graph for forward/backprop ============================
 
-class Graph(base.Graph):
 
+class Graph(base.Graph):
     def __init__(self,opt):
         super().__init__(opt)
         self.neural_image = NeuralImageFunction(opt)
@@ -491,18 +491,18 @@ class Graph(base.Graph):
         if mode == "train":
             var.rgb = self.neural_image.forward(var.input)
         else:
-            var.rgb = self.neural_image.forward(var.test_coords.squeeze(0))
+            var.rgb = self.neural_image.forward(var.test_coords)
         return var
         
     def compute_loss(self,opt,var,mode=None):
         loss = edict()
         if opt.loss_weight.render is not None:
-            image = var.image.view(opt.batch_size,self.channel,opt.H*opt.W).permute(0,2,1)
             if mode == "train":
-                loss.render = self.mse_loss(var.rgb,var.label.unsqueeze(0))
+                loss.render = self.mse_loss(var.rgb,var.label)
             else:
-                loss.render = self.mse_loss(var.rgb, image)
+                loss.render = self.mse_loss(var.rgb, var.gt_rgb)
         return loss
+
 
 
 class SineLayer(torch.nn.Module):    
@@ -529,6 +529,7 @@ class SineLayer(torch.nn.Module):
 
     def forward(self, input):
         return torch.sin(self.omega * self.linear(input))
+
 
 
 class NeuralImageFunction(torch.nn.Module):
@@ -559,9 +560,7 @@ class NeuralImageFunction(torch.nn.Module):
 
 
     def forward(self,coord_2D): 
-
         rgb = self.mlp(coord_2D)
-        
         return rgb
 
 

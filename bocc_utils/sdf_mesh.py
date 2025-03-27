@@ -5,7 +5,6 @@ import numpy as np
 import plyfile
 import time
 from bocc_utils import files_utils
-import skimage.measure
 import itertools
 import mcubes
 import trimesh
