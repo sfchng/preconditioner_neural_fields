@@ -7,7 +7,7 @@ Australian Institute for Machine Learning (AIML), University of Adelaide, \* den
 
 This is the official implementation of the paper "Preconditioners for the Stochastic Training of Neural fields".
 <p align="center" width="100%">
-<img src="misc/teaser_figure.png" width="75%"> 
+<img src="misc/teaser_figure.png" width="95%"> 
 </p>
 
 
