@@ -1,6 +1,6 @@
-# Preconditioners for the Stochastic Training of Neural fields (CVPR-2025)
+# Preconditioners for the Stochastic Training of Neural fields (CVPR 2025)
 
-<a href='https://arxiv.org/abs/2402.08784.pdf'><img src='https://img.shields.io/badge/Paper-Arxiv-red'></a>
+<a href='https://arxiv.org/abs/2402.08784.pdf'><img src='https://img.shields.io/badge/Paper-Arxiv-red'></a></br>
 This is the official implementation of the paper "Preconditioners for the Stochastic Training of Neural fields".
 
 [Shin-Fang Chng](https://sfchng.github.io)\*,
